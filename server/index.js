@@ -6,14 +6,19 @@ const PORT = process.env.PORT || 3000;
 const httpServer = http.createServer(app);
 const cors = require("cors");
 const { connection } = require('./Configs/Config');
+const { UserRouter } = require('./Routes/user.route');
+const { dashboardRouter } = require('./Routes/dashboard.route');
 
-
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use(express.text());
 
 app.get('/', async (req, res) => {
     res.status(200).send('Welcome Paypal!!!');
 });
+
+app.use('/', UserRouter);
+app.use('/dashboard', dashboardRouter);
 
 
 httpServer.listen(PORT, async () => {
