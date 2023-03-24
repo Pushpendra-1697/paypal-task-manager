@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import Home from './Home';
 import Signin from './Signin';
 import Signup from './Signup';
+import UserAssignedTask from './UserAssignedTask';
 
 const AllRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const AllRoutes = () => {
         <Route path='/dashboard' element={<Dashboard />}></Route>
         <Route path='/signup' element={<Signup />}></Route>
         <Route path='/login' element={<Signin />}></Route>
+        <Route path='/assignedTask' element={<UserAssignedTask />}></Route>
       </Routes>
     </Box>
   );

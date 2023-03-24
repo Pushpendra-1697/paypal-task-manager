@@ -34,6 +34,18 @@ export const updateTask = (id, changes) => async (dispatch) => {
     }
 };
 
+export const updateAssignee = (id, changes) => async (dispatch) => {
+    dispatch({ type: TASK_LOADING });
+    try {
+        let res = await axios.patch(`${backend_url}/dashboard/assignee/patch/${id}`, {
+            ...changes
+        });
+        dispatch({ type: UPDATE_TASK, payload: res.data });
+    } catch (e) {
+        dispatch({ type: TASK_ERROR, payload: e.message });
+    }
+};
+
 export const deleteTask = (id) => async (dispatch) => {
     dispatch({ type: TASK_LOADING });
     try {

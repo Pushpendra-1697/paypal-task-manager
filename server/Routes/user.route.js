@@ -6,6 +6,16 @@ const { UserModel } = require('../Models/user.model');
 require('dotenv').config();
 
 
+UserRouter.get('/users', async (req, res) => {
+    let query = req.query;
+    try {
+        let users = await UserModel.find(query);
+        res.status(200).send(users);
+    } catch (err) {
+        res.status(404).send({ msg: "something went wrong" });
+    }
+});
+
 UserRouter.post('/signup', async (req, res) => {
     const { email, password } = req.body;
     try {

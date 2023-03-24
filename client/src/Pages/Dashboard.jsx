@@ -16,22 +16,25 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { BiLoaderCircle } from "react-icons/bi";
-import { addTask, deleteTask, getTasks, updateTask } from "../redux/TaskManager/task.action";
+import { addTask, deleteTask, getTasks, updateAssignee, updateTask } from "../redux/TaskManager/task.action";
+import { getUsers } from "../redux/UserManager/user.action";
 
 
 var totalPages = 10;
 let initialState = {
   task: "",
   severity: "",
-  status: ''
+  status: '',
+  assign: ''
 };
 const Dashboard = () => {
   const { loading, error, tasks } = useSelector((store) => store.taskManager);
+  const { users } = useSelector((store) => store.userManager);
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const initPage = Number(searchParams.get('page')) || 1;
@@ -45,7 +48,9 @@ const Dashboard = () => {
   const [page, setPage] = useState(initPage);
 
 
+
   useEffect(() => {
+    dispatch(getUsers());
     dispatch(getTasks(page));
     setToken(localStorage.getItem('token'));
   }, [page]);
@@ -89,7 +94,8 @@ const Dashboard = () => {
     setFormData({
       task: "",
       severity: "",
-      status: ''
+      status: '',
+      assign: ''
     });
   };
 
@@ -119,7 +125,15 @@ const Dashboard = () => {
     setTodos(items);
   };
 
-  const { task, severity, status } = formData;
+
+  const changeAssigneeFunction = (e, id) => {
+    const { value } = e.target;
+    dispatch(updateAssignee(id, { assign: value }));
+  };
+
+
+
+  const { task, severity, status, assign } = formData;
 
   // if (token === null) {
   //   return <Navigate to="/login" />
@@ -175,6 +189,19 @@ const Dashboard = () => {
 
           <select
             style={{ width: "300px" }}
+            value={assign}
+            name="assign"
+            onChange={handleChange}
+          >
+            <option value={""}>Select Assignee</option>
+            {users && users.map((ele) =>
+              <option value={ele.email}>{ele.email}</option>
+            )}
+          </select>
+
+
+          <select
+            style={{ width: "300px" }}
             value={status}
             name="status"
             onChange={handleChange}
@@ -202,7 +229,7 @@ const Dashboard = () => {
 
             <Box display={"flex"} flexDirection={{ base: "column", sm: "column", md: "row", xl: "row", "2xl": "row" }} justifyContent={{ base: "space-evenly", sm: "center", md: "space-around", xl: "space-evenly", "2xl": "space-evenly" }} alignItems={{ base: "stretch", sm: "center", md: "unset", xl: "unset", "2xl": "stretch" }} {...provided.droppableProps} ref={provided.innerRef}>
 
-              {Todos && <Box w={"300px"} mt="20px">
+              {Todos && <Box w={"350px"} mt="20px">
                 <Heading mb="10px" bg="blue" color={"white"} p="5px" borderRadius={"8px"} textAlign="center" fontSize={"23px"}>Todo</Heading>
                 {Todos && Todos.map((ele, index) =>
                   <Draggable key={ele._id} draggableId={ele._id} index={index}>
@@ -211,6 +238,12 @@ const Dashboard = () => {
                       <Box display={"flex"} justifyContent="space-evenly" mt="2px" bg="blue" color={"white"} padding="8px" boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Text>{ele.task}</Text>
                         <Text>{ele.severity}</Text>
+                        <select style={{ backgroundColor: "blue", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
+                          <option value={""}>{ele.assign}</option>
+                          {users.map((el) =>
+                            <option value={el.email}>{el.email}</option>
+                          )}
+                        </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>
                         <AiFillDelete onClick={() => handelDelete(ele._id)}></AiFillDelete>
                       </Box>
@@ -219,7 +252,7 @@ const Dashboard = () => {
                 )}
               </Box>}
 
-              {progress && <Box mt="20px" w={"300px"}>
+              {progress && <Box mt="20px" w={"350px"}>
                 <Heading mb="10px" bg="goldenrod" color={"white"} p="5px" borderRadius={"8px"} textAlign="center" fontSize={"23px"}>Progress</Heading>
                 {progress && progress.map((ele, index) =>
 
@@ -229,6 +262,12 @@ const Dashboard = () => {
                       <Box display={"flex"} justifyContent="space-evenly" mt="2px" bg="goldenrod" color={"white"} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} padding="8px" boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px">
                         <Text>{ele.task}</Text>
                         <Text>{ele.severity}</Text>
+                        <select style={{ backgroundColor: "goldenrod", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
+                          <option value={""}>{ele.assign}</option>
+                          {users.map((el) =>
+                            <option value={el.email}>{el.email}</option>
+                          )}
+                        </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>
                         <AiFillDelete onClick={() => handelDelete(ele._id)}></AiFillDelete>
                       </Box>
@@ -237,7 +276,7 @@ const Dashboard = () => {
                 )}
               </Box>}
 
-              {done && <Box mt="20px" w={"300px"}>
+              {done && <Box mt="20px" w={"350px"}>
                 <Heading mb="10px" textAlign="center" bg="green" color={"white"} p="5px" borderRadius={"8px"} fontSize={"23px"}>Done</Heading>
                 {done && done.map((ele, index) =>
                   <Draggable key={ele._id} draggableId={ele._id} index={index}>
@@ -245,6 +284,12 @@ const Dashboard = () => {
                       <Box display={"flex"} justifyContent="space-evenly" mt="2px" bg="green" color={"white"} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} padding="8px" boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px">
                         <Text>{ele.task}</Text>
                         <Text>{ele.severity}</Text>
+                        <select style={{ backgroundColor: "green", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
+                          <option value={""}>{ele.assign}</option>
+                          {users.map((el) =>
+                            <option value={el.email}>{el.email}</option>
+                          )}
+                        </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>
                         <AiFillDelete onClick={() => handelDelete(ele._id)}></AiFillDelete>
                       </Box>
@@ -259,11 +304,6 @@ const Dashboard = () => {
           )}
         </Droppable>
       </DragDropContext>
-
-
-
-
-
 
 
 
@@ -345,6 +385,13 @@ const Dashboard = () => {
         <Button isDisabled={page <= 1} variant={"outline"} onClick={() => setPage(page - 1)} >◀️PRE</Button>
         <Button color={"red"} variant={"outline"} isDisabled={true} border="1px solid blue">{page}</Button>
         <Button variant={"outline"} isDisabled={page == totalPages} onClick={() => setPage(page + 1)}>NEXT▶️</Button>
+      </Box>
+
+
+
+
+      <Box display={"flex"} justifyContent="center" alignItems={"center"}>
+        <Link style={{ marginTop: "5%", borderRadius: "10px", padding: "10px", backgroundColor: "blue", color: "white" }} to={"/assignedTask"}>All Assigned Tasks of Logged user</Link>
       </Box>
 
     </Box>
