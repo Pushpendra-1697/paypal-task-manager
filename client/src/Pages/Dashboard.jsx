@@ -135,9 +135,9 @@ const Dashboard = () => {
 
   const { task, severity, status, assign } = formData;
 
-  // if (token === null) {
-  //   return <Navigate to="/login" />
-  // };
+  if (token === null) {
+    return <Navigate to="/login" />
+  };
 
   return (
     <Box>
@@ -391,7 +391,7 @@ const Dashboard = () => {
 
 
       <Box display={"flex"} justifyContent="center" alignItems={"center"}>
-        <Link style={{ marginTop: "5%", borderRadius: "10px", padding: "10px", backgroundColor: "blue", color: "white" }} to={"/assignedTask"}>All Assigned Tasks of Logged user</Link>
+        <Link style={{ marginTop: "5%", borderRadius: "10px", padding: "10px", backgroundColor: "blue", color: "white" }} to={"/assignedTask"}>All Assigned Tasks of Logged User</Link>
       </Box>
 
     </Box>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { backend_url } from '../../Pages/BackendURL';
 import { ADD_TASK, REMOVE_TASK, TASK_ERROR, TASK_LOADING, TASK_SUCCESS, UPDATE_TASK } from "./task.type";
 
-export const getTasks = (page) => async (dispatch) => {
+export const getTasks = (page=1) => async (dispatch) => {
     dispatch({ type: TASK_LOADING });
     try {
         let res = await axios.get(`${backend_url}/dashboard/?page=` + page);
