@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 const dashboardSchema = new Schema({
-    name: String,
-    severity: String
+    task: String,
+    severity: String,
+    status: String
 }, {
     versionKey: false
 });
