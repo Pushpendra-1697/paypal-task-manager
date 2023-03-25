@@ -63,13 +63,13 @@ const Signup = () => {
             <Heading mb="10px" style={{ textAlign: "center" }}>Register</Heading>
             <form onSubmit={onSubmit} style={{ textAlign: "center" }}>
                 <Box className='input-icons'>
-                    <i class="fa fa-envelope icon"></i>
+                    <i className="fa fa-envelope icon"></i>
                     <Input className='input-field' w="300px" type={"email"} placeholder="Email" value={email} name="email" onChange={handleChange} />
                     {email.includes('@') === false ? <p style={{color: "red"}}>Not valid email*</p> : null}
                 </Box>
                 <Box className='input-icons'>
-                    <i class="fa fa-key icon"></i>
-                    <Input className='input-field' w="300px" type={"password"} value={password} name="password" placeholder='Password (4 to 8 characters)' onChange={handleChange} required minlength="4" maxlength="8" />
+                    <i className="fa fa-key icon"></i>
+                    <Input className='input-field' w="300px" type={"password"} value={password} name="password" placeholder='Password (4 to 8 characters)' onChange={handleChange} required minLength="4" maxLength="8" />
                     {password.length<4 ? <p style={{color: "red"}}>Not valid Password*</p> : null}
                 </Box>
                 <Input w="300px" style={{ backgroundColor: "blue", color: "white", border: "none", borderRadius: "10px", padding: "10px" }} type={"submit"} value="Register" />

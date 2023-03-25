@@ -194,8 +194,8 @@ const Dashboard = () => {
             onChange={handleChange}
           >
             <option value={""}>Select Assignee</option>
-            {users && users.map((ele) =>
-              <option value={ele.email}>{ele.email}</option>
+            {users && users.map((ele, index) =>
+              <option key={index} value={ele.email}>{ele.email}</option>
             )}
           </select>
 
@@ -240,8 +240,8 @@ const Dashboard = () => {
                         <Text>{ele.severity}</Text>
                         <select style={{ backgroundColor: "blue", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
                           <option value={""}>{ele.assign}</option>
-                          {users.map((el) =>
-                            <option value={el.email}>{el.email}</option>
+                          {users.map((el, index) =>
+                            <option key={index} value={el.email}>{el.email}</option>
                           )}
                         </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>
@@ -264,8 +264,8 @@ const Dashboard = () => {
                         <Text>{ele.severity}</Text>
                         <select style={{ backgroundColor: "goldenrod", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
                           <option value={""}>{ele.assign}</option>
-                          {users.map((el) =>
-                            <option value={el.email}>{el.email}</option>
+                          {users.map((el, index) =>
+                            <option key={index} value={el.email}>{el.email}</option>
                           )}
                         </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>
@@ -286,8 +286,8 @@ const Dashboard = () => {
                         <Text>{ele.severity}</Text>
                         <select style={{ backgroundColor: "green", color: "black", width: "80px" }} onChange={(e) => changeAssigneeFunction(e, ele._id)}>
                           <option value={""}>{ele.assign}</option>
-                          {users.map((el) =>
-                            <option value={el.email}>{el.email}</option>
+                          {users.map((el, index) =>
+                            <option key={index} value={el.email}>{el.email}</option>
                           )}
                         </select>
                         <AiFillEdit onClick={() => handleEdit(ele._id)}></AiFillEdit>

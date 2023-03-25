@@ -72,7 +72,7 @@ const Signin = () => {
                     localStorage.setItem('token', res.token);
                     localStorage.setItem('email', formData.email);
                     alert(`${res.msg}`);
-                    navigate('/dashboard');
+                    navigate('/');
                 }
             }
 
@@ -89,7 +89,7 @@ const Signin = () => {
         alert(`Login Successful with ${first.name}`);
         localStorage.setItem('username', first.name);
         localStorage.setItem('src', first.picture);
-        navigate('/dashboard');
+        navigate('/');
     };
 
     const { email, password } = formData;
@@ -98,12 +98,12 @@ const Signin = () => {
             <Heading mb="10px" style={{ textAlign: "center" }}>Login For Existing Users</Heading>
             <form onSubmit={onSubmit} style={{ textAlign: "center" }}>
                 <Box className='input-icons'>
-                    <i class="fa fa-envelope icon"></i>
+                    <i className="fa fa-envelope icon"></i>
                     <Input className='input-field' w="300px" type={"email"} placeholder="Email" value={email} name="email" onChange={handleChange} />
                     {email.includes('@') === false ? <p style={{color: "red"}}>Not valid email*</p> : null}
                 </Box>
                 <Box className='input-icons'>
-                    <i class="fa fa-key icon"></i>
+                    <i className="fa fa-key icon"></i>
                     <Input className='input-field' w="300px" type={"password"} value={password} name="password" placeholder='Password' onChange={handleChange} />
                 </Box>
                 <Input w="300px" style={{ backgroundColor: "blue", color: "white", border: "none", borderRadius: "10px", padding: "10px" }} type={"submit"} value="Login" />
